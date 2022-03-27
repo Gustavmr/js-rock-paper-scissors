@@ -60,11 +60,11 @@ function playRound (playerSelection, computerSelection) {
 
 function scissorsOutput (computerPlay) {
     if (computerPlay === "rock") {
-        return "You Lose! Rock beats scissors";
+        return ["You Lose! Rock beats scissors",0,1];
     } else if (computerPlay === "paper") {
-        return "You Win! Scissors beats paper";
+        return ["You Win! Scissors beats paper",1,0];
     } else if (computerPlay === "scissors") {
-        return "You Tie! Both chose scissors";
+        return ["You Tie! Both chose scissors",0,0];
     } else {
         return "Play not valid!"
     }
@@ -72,24 +72,83 @@ function scissorsOutput (computerPlay) {
 
 function rockOutput (computerPlay) {
     if (computerPlay === "rock") {
-        return "You Tie! Both chose rock";
+        return ["You Tie! Both chose rock",0,0];
     } else if (computerPlay === "paper") {
-        return "You Lose! Paper beats rock";
+        return ["You Lose! Paper beats rock",0,1];
     } else if (computerPlay === "scissors") {
-        return "You Win! Rock beats scissors";
+        return ["You Win! Rock beats scissors",1,0];
+    } else {
+        return ["Play not valid!",0,0];
+    }
+}
+
+
+
+function paperOutput (computerPlay){
+    if (computerPlay === "rock") {
+        return ["You Win! Paper beats rock",1,0];
+    } else if (computerPlay === "paper") {
+        return ["You Tie! Both chose pzpdf",0,0];
+    } else if (computerPlay === "scissors") {
+        return ["You Lose! Scissors beats paper",0,1];
     } else {
         return "Play not valid!";
     }
 }
 
-function paperOutput (computerPlay){
-    if (computerPlay === "rock") {
-        return "You Win! Paper beats rock";
-    } else if (computerPlay === "paper") {
-        return "You Tie! Both chose pzpdf";
-    } else if (computerPlay === "scissors") {
-        return "You Lose! Scissors beats paper";
-    } else {
-        return "Play not valid!";
-    }
+
+function playRock () {
+    let computerSelection = computerPlay();
+    if (computerSelection === "rock") return ["You Tie! Both chose rock",0,0];
+    if (computerSelection === "paper") return ["You Lose! Paper beats rock",0,1];
+    if (computerSelection === "scissors") return ["You Win! Rock beats scissors",1,0];
+    return "Play not valid!";
 }
+
+function playPaper (){
+    let computerSelection = computerPlay();
+    if (computerSelection === "rock") return "You Win! Paper beats rock";
+    if (computerSelection === "paper") return "You Tie! Both chose paper";
+    if (computerSelection === "scissors") return "You Lose! Scissors beats paper";
+    return "Play not valid!";
+    
+}
+
+function playScissors () {
+    let computerSelection = computerPlay();
+    if (computerSelection === "rock") return "You Lose! Rock beats scissors";
+    if (computerSelection === "paper") return "You Win! Scissors beats paper";
+    if (computerSelection === "scissors") return "You Tie! Both chose scissors";
+    return "Play not valid!"
+    
+}
+
+
+
+const rock = document.querySelector("#rock");
+const paper = document.querySelector("#paper");
+const scissors = document.querySelector("#scissors");
+const outcome = document.querySelector("div.outcome");
+const playerScore = document.querySelector("#playerScore")
+const computerScore = document.querySelector("#computerScore") 
+const winner = document.querySelector("#winner") 
+
+function gameOutcome (outcomeArray) {
+    if (playerScore.textContent >= 5 || computerScore.textContent >= 5)  return; 
+    let text = outcomeArray[0];
+    let playerOutcome = outcomeArray[1];
+    let computerOutcome = outcomeArray[2];
+    console.log(text);
+    outcome.textContent = text;
+    playerScore.textContent = playerScore.textContent*1 + playerOutcome;
+    computerScore.textContent = computerScore.textContent*1 + computerOutcome;
+    if (playerScore.textContent >= 5) {winner.textContent = "Player Wins!"; return};
+    if (computerScore.textContent >= 5) {winner.textContent = "Computer Wins!"; return}; 
+}
+
+// rock.addEventListener("click", () => outcome.textContent = playRound("rock",computerPlay())) ;
+rock.addEventListener("click", () => gameOutcome(playRound("rock",computerPlay())));
+paper.addEventListener("click", () => gameOutcome(playRound("paper",computerPlay()))) ;
+scissors.addEventListener("click", () => gameOutcome(playRound("scissors",computerPlay()))) ;
+
+
